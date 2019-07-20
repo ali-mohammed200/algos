@@ -29,3 +29,17 @@ function longest(s1, s2) {
   }
   return combined.split("").sort().join("");
 }
+
+
+function longest1(s1, s2) {
+  let myOrderedArray = (s1+s2).split("").reduce(function (accumulator, currentValue) {
+    if (accumulator.indexOf(currentValue) === -1) {
+      accumulator.push(currentValue);
+    }
+    return accumulator
+  }, []);
+  return myOrderedArray.sort().join("");
+}
+
+//Other peoples solution \|/
+const longest2 = (s1, s2) => [...new Set(s1+s2)].sort().join('')
