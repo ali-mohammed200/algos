@@ -1,8 +1,4 @@
-function checkCoupon(enteredCode, correctCode, currentDate, expirationDate){
-    if(typeof(correctCode) === 'boolean'){
-      return false
-    }
-    
+function checkCoupon(enteredCode, correctCode, currentDate, expirationDate){  
     let cD = new Date(currentDate);
     let eD = new Date(expirationDate);
   
