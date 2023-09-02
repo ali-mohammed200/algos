@@ -133,7 +133,7 @@ function fib(num){
   console.log(fib(8));
 
 
-
+// for fib, you need to know -1 and -2 from current 
 
 
 
