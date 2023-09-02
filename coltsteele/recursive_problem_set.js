@@ -86,3 +86,83 @@ function recursiveRange(num){
     helper_range(num)
     return sum;
 }
+
+
+// fib
+// Write a recursive function called fib which accepts a number and returns the nth number in the Fibonacci sequence. Recall that the Fibonacci sequence is the sequence of whole numbers 1, 1, 2, 3, 5, 8, ... which starts with 1 and 1, and where every number thereafter is equal to the sum of the previous two numbers.
+
+function fib(num){
+    // add whatever parameters you deem necessary - good luck!  
+      let arr = [];
+      for(let i = 0; i < num; i++){
+          if (i == 0 || i == 1) {
+              arr.push(1);
+          }
+          if (i > 1) {
+              arr.push(arr[i - 1] + arr[i - 2])
+          }
+      }
+      
+      return arr;
+  }
+  
+  console.log(fib(8));
+
+
+
+  function fib(num){
+    // add whatever parameters you deem necessary - good luck!  
+      let arr = [];
+      
+      function fib_h(i){
+          if (i == num) return;
+          if (i == 0 || i == 1) {
+              arr.push(1);
+          }
+          if (i > 1) {
+              arr.push(arr[i - 1] + arr[i - 2])
+          }
+          fib_h(i+1)
+      }
+      
+      fib_h(0);
+      
+      return arr;
+  }
+  
+  console.log(fib(8));
+
+
+
+
+
+
+//   SOLUTIONS FOR THIS SECTION
+// POWER SOLUTION
+function power(base, exponent){
+    if(exponent === 0) return 1;
+    return base * power(base,exponent-1);
+}
+// FACTORIAL SOLUTION
+function factorial(x){
+   if (x < 0 ) return 0;
+   if (x <= 1 ) return 1;
+   return x * factorial(x-1);
+}
+// PRODUCT OF ARRAY SOLUTION
+function productOfArray(arr) {
+    if(arr.length === 0) {
+        return 1;
+    }
+    return arr[0] * productOfArray(arr.slice(1));
+}
+// RECURSIVE RANGE SOLUTION
+function recursiveRange(x){
+   if (x === 0 ) return 0;
+   return x + recursiveRange(x-1);
+}
+// FIBONACCI SOLUTION
+function fib(n){
+    if (n <= 2) return 1;
+    return fib(n-1) + fib(n-2);
+}
