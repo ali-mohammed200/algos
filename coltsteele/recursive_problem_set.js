@@ -166,3 +166,277 @@ function fib(n){
     if (n <= 2) return 1;
     return fib(n-1) + fib(n-2);
 }
+
+// Sun West Mortage Interview Question
+// create an html table
+// rate,price,rate,price,rate,price:lock;rate,price,rate,price,rate,price:lock;rate,price,rate,price,rate,price:lock
+
+// 5.0,100,5.5,101,6.0,102:L1;5.0,90,5.5,91,6.0,92:L2;5.0,200,5.5,201,6.0,202:L3
+// Table would look like this
+//          L1      L2      L3
+//  5.0     100     90      200
+//  5.5     101     91      201
+//  6.0     102     92      202
+
+<table>
+  <tr>
+    <th>Company</th>
+    <th>Contact</th>
+    <th>Country</th>
+  </tr>
+  <tr>
+    <td>Alfreds Futterkiste</td>
+    <td>Maria Anders</td>
+    <td>Germany</td>
+  </tr>
+  <tr>
+    <td>Centro comercial Moctezuma</td>
+    <td>Francisco Chang</td>
+    <td>Mexico</td>
+  </tr>
+</table>
+
+// Attempt 1. Failure
+// I had the wrong approach
+// Needed to split and then organize the data
+function sun_west_tabler(str){
+    let rows = str.split(":");
+    let table = document.createElement("table");
+
+    // creating table rows
+    for(let i = 0; i < rows.length; i++){
+        let table_row = document.createElement("tr");
+        table_row.id = i === 0 ? "lock_row": `rate_row`;
+
+        for (let index = 0; index < rows.length; index++) {
+            let table_cell = document.createElement("td");
+            table_row.appendChild(table_cell);
+        }
+
+        table.appendChild(table_row);
+    }
+
+    for(let i = 0; i < rows.length; i++){
+        let row = rows[i];
+        let values = row.split(/[,;]/);
+        let lock = "";
+
+        if (i !== 0) {
+            lock = values.pop();
+        }
+
+        console.log(values);
+    }
+
+    console.log(table);
+}
+
+let str = "5.0,100,5.5,101,6.0,102:L1;5.0,90,5.5,91,6.0,92:L2;5.0,200,5.5,201,6.0,202:L3"
+// console.log(sun_west_tabler(str));
+sun_west_tabler(str);
+
+
+// {
+//     L1: {
+//         5.0: [],
+//         5.5: [],
+//         6.0: []
+//     }
+// }
+// // OR
+// {
+//     5.0: {
+//         L1: 100,
+//         L2: 90,
+//         L3: 200
+//     }
+// }
+// // OR
+// [
+//     [L1, [5.0, [100, 90, 200]]]
+// ]
+
+// Attempt 2. Failure
+// Trying to organize data
+// building an object initially to organize the data
+function sun_west_tabler(str){
+    let rows = str.split(";");
+    let table = document.createElement("table");
+
+    let organized_object = {}
+    for(let i = 0; i < rows.length; i++){
+        let row = rows[i];
+        let values = row.split(/[,:]/);
+        let lock = values.pop();
+
+        organized_object[lock] = {};
+
+        for (let index = 0; index < values.length; index += 2) {
+            const element = values[index];
+                // rate is current value[even index]
+                // since we are going +2 in the loop, we are only hitting evens
+                // index + 1 is going to be the price
+                organized_object[lock][element] = values[index + 1];
+        }
+    }
+
+    console.log(organized_object);
+    console.log(table);
+}
+
+
+// [
+//     [5.0, 100, 90, 200], 
+//     [5.5, 101, 91, 201], 
+//     [6.0, 102, 92, 202]
+// ]
+
+// {
+//     5.0: [100, 90, 200],
+//     5.5: [101, 91, 201],
+//     6.0: [102, 92, 202]
+// }
+
+// Attempt 3. Pass
+// Organized the data and then made the table
+// building an array matrix
+function sun_west_tabler(str){
+    let rows = str.split(";");
+    let table = document.createElement("table");
+
+    let locks = [" "];
+    let organized_matrix = {};
+
+    for(let i = 0; i < rows.length; i++){
+        let row = rows[i];
+        let values = row.split(/[,:]/);
+
+        const lock = values.pop();
+        locks.push(lock);
+
+        for (let index = 0; index < values.length; index += 2) {
+            const rate = values[index];
+            const price = values[index + 1];
+            // rate is current value[even index]
+            // since we are going +2 in the loop, we are only hitting evens
+            // index + 1 is going to be the price
+            organized_matrix[rate] ||= [];
+            organized_matrix[rate].push(price);
+        }
+    }
+
+    // Create header row for locks
+    let lock_row = document.createElement('tr');
+    lock_row.id = 'header_locks';
+    for(const lock of locks){
+        let header = document.createElement('th');
+        header.innerText = lock;
+        lock_row.appendChild(header);
+    }
+    table.appendChild(lock_row);
+
+
+    // Create rate-prices row
+    for (const key in organized_matrix) {
+        let prices = organized_matrix[key];
+        let rate_row = document.createElement('tr');
+        let rate_cell = document.createElement('td');
+        rate_cell.innerText = key;
+
+        rate_row.appendChild(rate_cell);
+
+        for (const price of prices) {
+            let price_cell = document.createElement('td');
+            price_cell.innerText = price;
+            rate_row.appendChild(price_cell);
+        }
+        table.appendChild(rate_row);
+    }
+
+    console.log(organized_matrix);
+    console.log(table);
+}
+
+
+let str2 = "5.0,100,5.5,101,6.0,102:L1;5.0,90,5.5,91,6.0,92:L2;5.0,200,5.5,201,6.0,202:L3"
+// console.log(sun_west_tabler(str));
+sun_west_tabler(str2);
+
+
+
+
+// HARDER Recursion problems;
+
+// reverse
+// Write a recursive function called reverse which accepts a string and returns a new string in reverse.
+
+function reverse(str){
+    // add whatever parameters you deem necessary - good luck!
+    
+    if(str.length === 0){
+        return '';
+    }
+    
+    return str.at(-1) + reverse(str.substring(0, str.length - 1))
+  }
+
+// console.log(reverse('awesome')); // 'emosewa'
+// reverse('rithmschool') // 'loohcsmhtir'
+
+// .at might be for recent js versions
+function reverse(str){
+    // add whatever parameters you deem necessary - good luck!
+    
+    if(str.length === 0){
+        return '';
+    }
+    
+    return str.charAt(str.length - 1) + reverse(str.substring(0, str.length - 1));
+  }
+
+
+
+
+
+
+//   isPalindrome
+// Write a recursive function called isPalindrome which returns true if the string passed to it is a palindrome (reads the same forward and backward). Otherwise it returns false.
+
+// isPalindrome('awesome') // false
+// isPalindrome('foobar') // false
+// isPalindrome('tacocat') // true
+// isPalindrome('amanaplanacanalpanama') // true
+// isPalindrome('amanaplanacanalpandemonium') // false
+
+  function isPalindrome(str){
+    // add whatever parameters you deem necessary - good luck!
+    if(str.length < 2){
+        return true;
+    }
+    
+    let sub = str.substring(1, str.length - 1);
+    
+    return str[0] === str.charAt(str.length - 1) && isPalindrome(sub);
+  }
+
+
+
+
+//   someRecursive
+//   Write a recursive function called someRecursive which accepts an array and a callback. The function returns true if a single value in the array returns true when passed to the callback. Otherwise it returns false.
+
+
+  // SAMPLE INPUT / OUTPUT
+const isOdd = val => val % 2 !== 0;
+
+// console.log(someRecursive([1,2,3,4], isOdd)) // true
+console.log(someRecursive([4,6,8,9], isOdd)) // true
+console.log(someRecursive([4,6,8], isOdd)) // false
+console.log(someRecursive([4,6,8], val => val > 10)); // false
+
+function someRecursive(arr, callback){
+  // add whatever parameters you deem necessary - good luck!
+  if (arr.length === 0) return false;
+  
+  return callback(arr.shift()) || someRecursive(arr, callback);
+}
