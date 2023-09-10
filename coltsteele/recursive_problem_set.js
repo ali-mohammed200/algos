@@ -440,3 +440,24 @@ function someRecursive(arr, callback){
   
   return callback(arr.shift()) || someRecursive(arr, callback);
 }
+
+
+// flatten
+// Write a recursive function called flatten which accepts an array of arrays and 
+// returns a new array with all values flattened.
+
+
+function flatten(arr){
+    // add whatever parameters you deem necessary - good luck!
+    if (arr.length === 0) return []
+    
+    let elem = Array.isArray(arr[0]) ? flatten(arr[0]) : [arr[0]];
+    
+    return elem.concat(flatten(arr.slice(1)))
+  }
+  
+  console.log(flatten([1, 2, 3, [4, 5], 0 ])) // [1, 2, 3, 4, 5, 0]
+  console.log(flatten([1, [2, [3, 4], [[5]]], [[[6]]]])) // [1, 2, 3, 4, 5, 6]
+  // flatten([[1],[2],[3]]) // [1,2,3]
+  // flatten([[[[1], [[[2]]], [[[[[[[3]]]]]]]]]]) // [1,2,3
+
